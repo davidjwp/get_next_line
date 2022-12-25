@@ -15,32 +15,65 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+static char	*current_line(char *line, char *buf, int index, int fd)
+{
+	int buf_length;
+
+	if (!index == BUFFER_SIZE)
+	{
+		buf_length = 0;
+		while (line[++index] != '\n')
+			buf[buf_length++] = line[index];
+		if (line[index] == '\n')
+			return (buf[0] = '\n', read(fd, line, BUFFER_SIZE), line); 
+	}
+	return (read(fd, line, BUFFER_SIZE), line);
+}	
+
 char	*get_next_line(int fd)
 {
-	static char	*buf;
+	static char	buf[BUFFER_SIZE];
 	int			index;
-	int			index2;
-	char		*line;
+	char		*rline;
+	char		*save;
 
+	save = ft_calloc (BUFFER_SIZE + 1, sizeof(char));
 	index = 0;
-	index2 = 0;
-	line = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (read(fd, line, BUFFER_SIZE))
+	if (!buf[0])
 	{
-		while (line[index] != '\n' && line[index])
-			index++;
-		if (line[index] == '\n')
+		while (index < BUFFER_SIZE && read(fd, rline, 1))
 		{
-			if (index < BUFFER_SIZE)
-			{
-				buf = &line[index];
-			}
-			line[index + 1] = 0;
+			if (*rline == '\n')
+				return (current_line(rline, buf, index, fd));
+			save[index++] = *rline;
 		}
+		if (!buf[0])
+			return ();
 	}
-	else if (buf)
-		return (free(line), buf);
-	return (line);
+	return (buf);
+	
+	
+	
+	/*line = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!buf)
+	{
+		if (read(fd, line, BUFFER_SIZE))
+		{
+			while (line[index] && line[index] != '\n')
+				index++;
+			if (line[index] == '\n')
+			{
+				while (line[index])
+			}
+		}
+		else
+			return (get_first_line(line));
+	}
+	else
+	{
+
+	}*/
 }
 
 int	main(int argc, char **argv)
