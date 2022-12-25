@@ -31,6 +31,7 @@ static char *give_to_buf(char *buf, char *save, int fd)
 }
 static char	*current_line(char *save, char *buf, int islast)
 {
+	/*this part also might be useless*/
 	if (islast)
 	{
 		buf = save;
@@ -57,7 +58,7 @@ char	*get_next_line(int fd)
 		if ((save[index-1] == '\n' || swinc) && index <= BUFFER_SIZE)
 		{
 			if (!read(fd, &buf[swinc++], 1) || buf[swinc] != '\n')
-				return (current_line(save, buf, 0));
+				return (current_line(save, buf, 0));/*this part --v might be useless*/
 			else if ((index + swinc) == BUFFER_SIZE)
 				return (current_line(save, buf, 1));
 		}
