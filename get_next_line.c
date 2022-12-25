@@ -15,72 +15,60 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-static char	*current_line(char *line, char *buf, int index, int fd)
+static char *give_to_buf(char *buf, char *save, int fd)
 {
-	int buf_length;
+	int	index;
+	int	length;
 
-	if (!index == BUFFER_SIZE)
+	index = 0;
+	length = 0;
+	while (buf[length])
+		save[length++] = buf[length];
+	save[length] = 0;
+	while (read(fd, &buf[index], 1) && (index + length) <= BUFFER_SIZE)
+		index++;
+	return (save);
+}
+static char	*current_line(char *save, char *buf, int islast)
+{
+	if (islast)
 	{
-		buf_length = 0;
-		while (line[++index] != '\n')
-			buf[buf_length++] = line[index];
-		if (line[index] == '\n')
-			return (buf[0] = '\n', read(fd, line, BUFFER_SIZE), line); 
+		buf = save;
+		return (buf);
 	}
-	return (read(fd, line, BUFFER_SIZE), line);
-}	
+	else
+		return (save);
+}
 
 char	*get_next_line(int fd)
 {
 	static char	buf[BUFFER_SIZE];
-	int			index;
-	char		*rline;
 	char		*save;
+	int			index;
+	int			swinc;
 
-	save = ft_calloc (BUFFER_SIZE + 1, sizeof(char));
+	swinc = 0;
 	index = 0;
-	if (!buf[0])
+	//save = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (*buf)
+		return (give_to_buf(buf, save, fd));
+	while (index <= BUFFER_SIZE && read(fd, &save[index++], 1))
 	{
-		while (index < BUFFER_SIZE && read(fd, rline, 1))
+		if ((save[index-1] == '\n' || swinc) && index <= BUFFER_SIZE)
 		{
-			if (*rline == '\n')
-				return (current_line(rline, buf, index, fd));
-			save[index++] = *rline;
+			if (!read(fd, &buf[swinc++], 1) || buf[swinc] != '\n')
+				return (current_line(save, buf, 0));
+			else if ((index + swinc) == BUFFER_SIZE)
+				return (current_line(save, buf, 1));
 		}
-		if (!buf[0])
-			return ();
 	}
-	return (buf);
-	
-	
-	
-	/*line = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!buf)
-	{
-		if (read(fd, line, BUFFER_SIZE))
-		{
-			while (line[index] && line[index] != '\n')
-				index++;
-			if (line[index] == '\n')
-			{
-				while (line[index])
-			}
-		}
-		else
-			return (get_first_line(line));
-	}
-	else
-	{
-
-	}*/
+	return (NULL);
 }
 
 int	main(int argc, char **argv)
 {
 	int		i = atoi(argv[1]);
 	int		fd;
-	//char	buf[BUFFER_SIZE];
 
 	fd = open("fileread", O_RDWR);
 	while (i)

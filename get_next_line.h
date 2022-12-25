@@ -20,7 +20,15 @@
 # include <unistd.h>
 # include <stdlib.h>
 
+typedef struct  int_l{
+    int index;
+    int switch_to_buf;
+    int bfidx;
+}               int_t;
+
 char	*get_next_line(int fd);
 void    *ft_calloc(size_t nmemb, size_t nbr);
+int     ft_strlen(const char *str);
+size_t  ft_strlcpy(char *dst, const char *src, size_t size);
 
 #endif

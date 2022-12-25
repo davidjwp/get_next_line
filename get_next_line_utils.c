@@ -27,3 +27,31 @@ void	*ft_calloc(size_t nmemb, size_t nbr)
 		alloc[length] = 0;
 	return (alloc);
 }
+
+int	ft_strlen(const char *str)
+{
+	int	length;
+
+	length = 0;
+	while (str[length])
+		length++;
+	return (length);
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+{
+	unsigned int	src_length;
+	unsigned int	i;
+
+	i = 0;
+	src_length = ft_strlen(src);
+	if (!src || !dst)
+		return (src_length);
+	if (size)
+	{
+		while (src[i++] && i < size - 1)
+			dst[i] = src[i];
+		dst[i] = 0;
+	}
+	return (src_length);
+}
