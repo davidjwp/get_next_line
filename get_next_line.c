@@ -50,7 +50,6 @@ char	*get_next_line(int fd)
 
 	swinc = 0;
 	index = 0;
-	//save = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (*buf)
 		return (give_to_buf(buf, save, fd));
 	while (index <= BUFFER_SIZE && read(fd, &save[index++], 1))
