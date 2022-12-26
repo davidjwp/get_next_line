@@ -35,3 +35,19 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		return (1);
 	return (*s1 - *s2);
 }
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	char	*alloc;
+	size_t	ptr_size;
+
+	ptr_size = (int)(nmemb * size);
+	if (size != 0 && nmemb != (ptr_size / size))
+		return (NULL);
+	alloc = malloc(nmemb * size);
+	if (!alloc)
+		return (NULL);
+	while (ptr_size--)
+		alloc[ptr_size] = 0;
+	return (alloc);
+}

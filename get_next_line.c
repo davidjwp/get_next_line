@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static char *pass_to_save(char *buf, char *save, int fd)
+static char *pass_to_buf(char *buf, char *save, int fd)
 {
 	int	index;
 	int	length;
@@ -24,21 +24,21 @@ static char *pass_to_save(char *buf, char *save, int fd)
 	length = 0;
 	if (ft_strncmp(save, buf, ft_strlen(buf)))
 	{
-		while (buf[length])
+		while (save[length])
 		{
-			save[length] = buf[length];
+			buf[length] = save[length];
 			length++;
 		}
-		save[length] = 0;
+		buf[length] = 0;
 		while ((index + length) TO_BUF)
 		{
-			if (read(fd, &buf[index], 1))
+			if (read(fd, &save[index], 1))
 				index++;
 			else
-				return (save);
+				return (free(save), buf);
 		}
 	}
-	return (NULL);
+	return (free(save), NULL);
 }
 
 static int	fill_line_in(char *str, int fd, int line)
@@ -59,14 +59,27 @@ char	*get_next_line(int fd)
 	static char	buf[BUFFER_SIZE];
 	char		*save;
 
-	if (*buf)
-		return (pass_to_save(buf, save, fd));
+	//save = ft_calloc( BUFFER_SIZE, sizeof(char)); can't have this line in the open else it might work idk
+	/*if (*buf)
+		return (pass_to_buf(buf, save, fd));
+	else if (fill_line_in(buf, fd, 0))
+	{
+		fill_line_in(save, fd, ft_strlen(buf));
+		return (buf);
+	}
+	else if (fill_line_in(save, fd, ft_strlen(buf)))
+		return (NULL);
+	else
+		return (NULL);
+	*/
+	if (*save)
+		return (pass_to_buf(buf, save, fd));
 	else
 	{
-		if (fill_line_in(save, fd, 1))
+		if (fill_line_in(buf, fd, 1))
 		{
-			fill_line_in(buf, fd, ft_strlen(save));
-			return (save);
+			fill_line_in(save, fd, ft_strlen(buf));
+			return (buf);
 		}
 		else
 			return (save);
