@@ -15,18 +15,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*static char	*current_line(char *save, char *buf, int islast)
-{
-	if (islast)
-	{
-		buf = save;
-		return (buf);
-	}
-	else
-		return (save);
-}
-*/
-
 static char *pass_to_save(char *buf, char *save, int fd)
 {
 	int	index;
@@ -37,7 +25,10 @@ static char *pass_to_save(char *buf, char *save, int fd)
 	if (ft_strncmp(save, buf, ft_strlen(buf)))
 	{
 		while (buf[length])
-			save[length++] = buf[length];
+		{
+			save[length] = buf[length];
+			length++;
+		}
 		save[length] = 0;
 		while ((index + length) TO_BUF)
 		{
@@ -47,8 +38,7 @@ static char *pass_to_save(char *buf, char *save, int fd)
 				return (save);
 		}
 	}
-	else
-		return (NULL);
+	return (NULL);
 }
 
 static int	fill_line_in(char *str, int fd, int line)
@@ -58,7 +48,7 @@ static int	fill_line_in(char *str, int fd, int line)
 	index = 0;
 	while (read(fd, &str[index++], 1) && (index + line)  TO_BUF)
 	{
-		if (str[index-1] == '\n')
+		if (str[index - 1] == '\n')
 			return (1);
 	}
 	return (0);
@@ -71,42 +61,17 @@ char	*get_next_line(int fd)
 
 	if (*buf)
 		return (pass_to_save(buf, save, fd));
-	if (!*save)
+	else
 	{
-		if (fill_line_in(save, fd, 0))
+		if (fill_line_in(save, fd, 1))
 		{
 			fill_line_in(buf, fd, ft_strlen(save));
 			return (save);
 		}
 		else
-			return (save)
-		/*while(index TO_BUF && read(fd, &save[index++], 1))
-		{
-			if (save[index-1] == '\n' || swinc)
-				while (read(fd, &buf[swinc++], 1) || buf[swinc])
-		}
-		return (save);*/
+			return (save);
 	}
 	return (NULL);
-	/*
-	while (index TO_BUF )
-	{
-		if (read(fd, &save[index++], 1))
-		{
-			if ((save[index-1] == '\n' || swinc) && index TO_BUF)
-			{
-				if (!read(fd, &buf[swinc++], 1) || buf[swinc] != '\n')
-					return (current_line(save, buf, 0));
-				else if ((index + swinc) == BUFFER_SIZE)
-					return (current_line(save, buf, 1));
-			}
-		}
-		else if (index)
-			return (save);
-		else
-			return (NULL);
-	}
-	return (NULL);*/
 }
 
 int	main(int argc, char **argv)
@@ -120,5 +85,6 @@ int	main(int argc, char **argv)
 		printf("%s",get_next_line(fd));
 		i--;
 	}
+	(void)argc;
 	return (0);
 }
