@@ -15,23 +15,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static char *give_to_buf(char *buf, char *save, int fd)
+/*static char	*current_line(char *save, char *buf, int islast)
 {
-	int	index;
-	int	length;
-
-	index = 0;
-	length = 0;
-	while (buf[length])
-		save[length++] = buf[length];
-	save[length] = 0;
-	while (read(fd, &buf[index], 1) && (index + length) <= BUFFER_SIZE)
-		index++;
-	return (save);
-}
-static char	*current_line(char *save, char *buf, int islast)
-{
-	/*this part also might be useless*/
 	if (islast)
 	{
 		buf = save;
@@ -40,29 +25,88 @@ static char	*current_line(char *save, char *buf, int islast)
 	else
 		return (save);
 }
+*/
+
+static char *pass_to_save(char *buf, char *save, int fd)
+{
+	int	index;
+	int	length;
+
+	index = 0;
+	length = 0;
+	if (ft_strncmp(save, buf, ft_strlen(buf)))
+	{
+		while (buf[length])
+			save[length++] = buf[length];
+		save[length] = 0;
+		while ((index + length) TO_BUF)
+		{
+			if (read(fd, &buf[index], 1))
+				index++;
+			else
+				return (save);
+		}
+	}
+	else
+		return (NULL);
+}
+
+static int	fill_line_in(char *str, int fd, int line)
+{
+	int	index;
+
+	index = 0;
+	while (read(fd, &str[index++], 1) && (index + line)  TO_BUF)
+	{
+		if (str[index-1] == '\n')
+			return (1);
+	}
+	return (0);
+}
 
 char	*get_next_line(int fd)
 {
 	static char	buf[BUFFER_SIZE];
 	char		*save;
-	int			index;
-	int			swinc;
 
-	swinc = 0;
-	index = 0;
 	if (*buf)
-		return (give_to_buf(buf, save, fd));
-	while (index <= BUFFER_SIZE && read(fd, &save[index++], 1))
+		return (pass_to_save(buf, save, fd));
+	if (!*save)
 	{
-		if ((save[index-1] == '\n' || swinc) && index <= BUFFER_SIZE)
+		if (fill_line_in(save, fd, 0))
 		{
-			if (!read(fd, &buf[swinc++], 1) || buf[swinc] != '\n')
-				return (current_line(save, buf, 0));/*this part --v might be useless*/
-			else if ((index + swinc) == BUFFER_SIZE)
-				return (current_line(save, buf, 1));
+			fill_line_in(buf, fd, ft_strlen(save));
+			return (save);
 		}
+		else
+			return (save)
+		/*while(index TO_BUF && read(fd, &save[index++], 1))
+		{
+			if (save[index-1] == '\n' || swinc)
+				while (read(fd, &buf[swinc++], 1) || buf[swinc])
+		}
+		return (save);*/
 	}
 	return (NULL);
+	/*
+	while (index TO_BUF )
+	{
+		if (read(fd, &save[index++], 1))
+		{
+			if ((save[index-1] == '\n' || swinc) && index TO_BUF)
+			{
+				if (!read(fd, &buf[swinc++], 1) || buf[swinc] != '\n')
+					return (current_line(save, buf, 0));
+				else if ((index + swinc) == BUFFER_SIZE)
+					return (current_line(save, buf, 1));
+			}
+		}
+		else if (index)
+			return (save);
+		else
+			return (NULL);
+	}
+	return (NULL);*/
 }
 
 int	main(int argc, char **argv)

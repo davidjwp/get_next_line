@@ -21,3 +21,17 @@ int	ft_strlen(const char *str)
 		length++;
 	return (length);
 }
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	if (!n)
+		return (0);
+	while (*s1 == *s2 && --n)
+	{
+		s1++;
+		s2++;
+	}
+	if ((*s1 - *s2)== -128)
+		return (1);
+	return (*s1 - *s2);
+}
