@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static char *pass_to_buf(char *buf, char *save, int fd)
+/*static char *pass_to_buf(char *buf, char *save, int fd)
 {
 	int	index;
 	int	length;
@@ -53,13 +53,30 @@ static int	fill_line_in(char *str, int fd, int line)
 	}
 	return (0);
 }
+*/
+
+char	*get_line(int fd)
+{
+	char	**line;
+	char	*save;
+
+	save = ft_calloc(BUFFER_SIZE, sizeof(char));
+	if (!save)
+		return (NULL);
+	read(fd, save, BUFFER_SIZE);
+	line = ft_split(save, '\n');
+	return (free(save), *line);
+}
 
 char	*get_next_line(int fd)
 {
 	static char	buf[BUFFER_SIZE];
-	char		*save;
-
-	//save = ft_calloc( BUFFER_SIZE, sizeof(char)); can't have this line in the open else it might work idk
+	char	*line;
+	(void)buf;
+	(void)line;
+	if (fd < 0 || !BUFFER_SIZE)
+		return (0);
+	return (get_line(fd)); 
 	/*if (*buf)
 		return (pass_to_buf(buf, save, fd));
 	else if (fill_line_in(buf, fd, 0))
@@ -70,21 +87,8 @@ char	*get_next_line(int fd)
 	else if (fill_line_in(save, fd, ft_strlen(buf)))
 		return (NULL);
 	else
-		return (NULL);
-	*/
-	if (*save)
-		return (pass_to_buf(buf, save, fd));
-	else
-	{
-		if (fill_line_in(buf, fd, 1))
-		{
-			fill_line_in(save, fd, ft_strlen(buf));
-			return (buf);
-		}
-		else
-			return (save);
-	}
-	return (NULL);
+		return (NULL);*/
+
 }
 
 int	main(int argc, char **argv)
