@@ -20,16 +20,9 @@
 # define BUFFER_SIZE 100
 #endif
 
-typedef struct  int_l{
-    int index;
-    int switch_to_buf;
-    int bfidx;
-}               int_t;
-
 char	*get_next_line(int fd);
 int     ft_strlen(const char *str);
-int     ft_strncmp(const char *s1, const char *s2, size_t n);
 void    *ft_calloc(size_t nmemb, size_t size);
-char    **ft_split(const char *s, char c);
+char	*ft_strjoin(char const *s1, char const *s2);
 
 #endif

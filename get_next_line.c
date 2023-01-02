@@ -15,116 +15,49 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*static char *pass_to_buf(char *buf, char *save, int fd)
+char *read_buf_line(int fd, char *buf)
 {
-	int	index;
-	int	length;
+	char	*line;
+	int		bytes_read;
 
-	index = 0;
-	length = 0;
-	if (ft_strncmp(save, buf, ft_strlen(buf)))
-	{
-		while (save[length])
-		{
-			buf[length] = save[length];
-			length++;
-		}
-		buf[length] = 0;
-		while ((index + length) TO_BUF)
-		{
-			if (read(fd, &save[index], 1))
-				index++;
-			else
-				return (free(save), buf);
-		}
-	}
-	return (free(save), NULL);
-}
-
-static int	fill_line_in(char *str, int fd, int line)
-{
-	int	index;
-
-	index = 0;
-	while (read(fd, &str[index++], 1) && (index + line)  TO_BUF)
-	{
-		if (str[index - 1] == '\n')
-			return (1);
-	}
-	return (0);
-}
-*/
-
-char	*get_line(int fd, char  buf, char line)
-{
-	line = ft_calloc(BUFFER_SIZE, sizeof(char));
-	
-	
-	/*
-	save = ft_calloc(BUFFER_SIZE, sizeof(char));
-	if (!save)
+	line = ft_calloc( BUFFER_SIZE + 1, sizeof(char));
+	if (!buf)
 		return (NULL);
-	read(fd, save, BUFFER_SIZE);
-	line = ft_split(save, '\n');
-	return (free(save), *line);*/
+	bytes_read = 1;
+	while(!check_line(buf) && bytes_read)
+	{
+		bytes_read = read(fd, line, BUFFER_SIZE);
+		if (bytes_read == -1)
+			return(free(buf), NULL);
+		buf = ft_strjoin(buf, line);
+	}
+	free(line);
+	return (buf);
 }
 
-char *read_line(int fd, char *line, char *buf)
+char *give_line(char *buf)
 {
-	int num_bytes;
-	int	index;
+	char *line;
 
-	line = ft_calloc( BUFFER_SIZE, sizeof(char));
-	if (!line)
-		return (NULL);
-	num_bytes = read(fd, line, BUFFER_SIZE);
-	index = ft_strlen();
-	while (num_bytes)
-	{
-		
-		num_bytes--;
-	}
-
-
-	read(fd, );
+	line = ft_calloc();
+	return ();
 }
 
 char	*get_next_line(int fd)
 {
-	static char	buf[BUFFER_SIZE];
+	static char	buf;
 	char	*line;
 	
-	/*read from fd and give to buf*/
-	read_line(fd, line, buf);
-	/*look for rtl in line given*/
-
-	/*if rtl found give to line and clean the given string from buf then return line */
-
-	
-	
-	
-	
-	
-	
-	
-	
-	/*(void)buf;
-	(void)line;
-	if (fd < 0 || !BUFFER_SIZE)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
-	return (get_line(fd)); */
-	/*if (*buf)
-		return (pass_to_buf(buf, save, fd));
-	else if (fill_line_in(buf, fd, 0))
-	{
-		fill_line_in(save, fd, ft_strlen(buf));
-		return (buf);
-	}
-	else if (fill_line_in(save, fd, ft_strlen(buf)))
+	buf = read_buf_line(fd, buf);
+	if (!buf)
 		return (NULL);
-	else
-		return (NULL);*/
-
+		/*give the return line to line*/
+	line = give_line(buf);
+	/*clear the return from the buf array*/
+	buf = ;
+	return (line);
 }
 
 int	main(int argc, char **argv)
