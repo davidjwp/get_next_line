@@ -16,13 +16,13 @@
 #include <stdlib.h>
 
 /*read BUFFER_SIZE file until a newline is found while adding the read bytes to buf*/
-char *read_buf_line(int fd, char *buf)
+char	*read_buf_line(int fd, char *buf)
 {
 	char	*line;
 	int		bytes_read;
 
 	line = ft_calloc( BUFFER_SIZE + 1, sizeof(char));
-	if (!buf)
+	if (!line)
 		return (NULL);
 	bytes_read = 1;
 	while(!check_line(buf) && bytes_read)
@@ -69,8 +69,8 @@ char	*clear_buf(char *buf)
 
 char	*get_next_line(int fd)
 {
-	static char	buf;
-	char	*line;
+	static char	*buf;
+	char		*line;
 	
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);

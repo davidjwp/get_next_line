@@ -19,10 +19,12 @@
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 100
 #endif
-
-char	*get_next_line(int fd);
-int     ft_strlen(const char *str);
-void    *ft_calloc(size_t nmemb, size_t size);
+/*general utilities*/
+int		ft_strlen(const char *str);
+void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_strjoin(char const *s1, char const *s2);
+/*get_next_line utilities*/
+char	*get_next_line(int fd);
+int 	check_line(char *buf);
 
 #endif

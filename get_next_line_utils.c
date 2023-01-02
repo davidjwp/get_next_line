@@ -23,27 +23,11 @@ int	ft_strlen(const char *str)
 	return (length);
 }
 
-static int check_line(char *buf)
-{
-	int	i;
-
-	i = 0;
-	if (!buf)
-		return (0);
-	while (buf[i] != '\n' && buf[i])
-	{
-		if (i == '\n')
-			return (i);
-		i++;
-	}
-	return(0);
-}
-
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*join;
 	size_t	size;
-
+	/*here is the problem, ft_strlen tries to read s1(buf) but there is nothing to read, segfault*/
 	size = ft_strlen(s1) + ft_strlen(s2);
 	join = (char *)ft_calloc(size + 1, sizeof(char));
 	if (!join)
@@ -66,8 +50,24 @@ void	*ft_calloc(size_t nmemb, size_t size)
 		return (NULL);
 	ptr = malloc(nmemb * size);
 	if (!ptr)
-		reurn (NULL);
+		return (NULL);
 	while (ptr_size--)
 		ptr[ptr_size] = 0;
 	return (ptr);
+}
+
+int check_line(char *buf)
+{
+	int	i;
+
+	i = 0;
+	if (!buf)
+		return (0);
+	while (buf[i] != '\n' && buf[i])
+	{
+		if (i == '\n')
+			return (i);
+		i++;
+	}
+	return(0);
 }
