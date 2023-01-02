@@ -55,28 +55,64 @@ static int	fill_line_in(char *str, int fd, int line)
 }
 */
 
-char	*get_line(int fd)
+char	*get_line(int fd, char  buf, char line)
 {
-	char	**line;
-	char	*save;
-
+	line = ft_calloc(BUFFER_SIZE, sizeof(char));
+	
+	
+	/*
 	save = ft_calloc(BUFFER_SIZE, sizeof(char));
 	if (!save)
 		return (NULL);
 	read(fd, save, BUFFER_SIZE);
 	line = ft_split(save, '\n');
-	return (free(save), *line);
+	return (free(save), *line);*/
+}
+
+char *read_line(int fd, char *line, char *buf)
+{
+	int num_bytes;
+	int	index;
+
+	line = ft_calloc( BUFFER_SIZE, sizeof(char));
+	if (!line)
+		return (NULL);
+	num_bytes = read(fd, line, BUFFER_SIZE);
+	index = ft_strlen();
+	while (num_bytes)
+	{
+		
+		num_bytes--;
+	}
+
+
+	read(fd, );
 }
 
 char	*get_next_line(int fd)
 {
 	static char	buf[BUFFER_SIZE];
 	char	*line;
-	(void)buf;
+	
+	/*read from fd and give to buf*/
+	read_line(fd, line, buf);
+	/*look for rtl in line given*/
+
+	/*if rtl found give to line and clean the given string from buf then return line */
+
+	
+	
+	
+	
+	
+	
+	
+	
+	/*(void)buf;
 	(void)line;
 	if (fd < 0 || !BUFFER_SIZE)
 		return (0);
-	return (get_line(fd)); 
+	return (get_line(fd)); */
 	/*if (*buf)
 		return (pass_to_buf(buf, save, fd));
 	else if (fill_line_in(buf, fd, 0))
