@@ -23,19 +23,20 @@ int	ft_strlen(const char *str)
 	return (length);
 }
 
-static int check_buf(char *buf)
+static int check_line(char *buf)
 {
-	int	index;
+	int	i;
 
-	index = 0;
+	i = 0;
 	if (!buf)
 		return (0);
-	while (buf[index] != '\n')
-		index++;
-	if (index)
-		return (1);
-	else
-		return (0);
+	while (buf[i] != '\n' && buf[i])
+	{
+		if (i == '\n')
+			return (i);
+		i++;
+	}
+	return(0);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)

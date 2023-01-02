@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*read BUFFER_SIZE file until a newline is found while adding the read bytes to buf*/
 char *read_buf_line(int fd, char *buf)
 {
 	char	*line;
@@ -31,16 +32,39 @@ char *read_buf_line(int fd, char *buf)
 			return(free(buf), NULL);
 		buf = ft_strjoin(buf, line);
 	}
-	free(line);
-	return (buf);
+	return (free(line), buf);
+}
+/*returns the first line of buf */
+char	*give_line(char *buf)
+{
+	char	*line;
+	int		i;
+
+	if (!buf[0])
+		return (NULL);
+	i = check_line(buf);
+	line = ft_calloc(i + 1 , sizeof(char));
+	while (i)
+	{
+		line[i] = buf[i];
+		i--;
+	}
+	return (line);
 }
 
-char *give_line(char *buf)
+/*returns everything after the newline in buf*/
+char	*clear_buf(char *buf)
 {
-	char *line;
+	char	*clear;
+	int		i;
+	int		j;
 
-	line = ft_calloc();
-	return ();
+	j = 0;
+	i = check_line(buf);
+	while (buf[i])
+		clear[j++] = buf[i++];
+	clear[j] = 0;
+	return (clear);
 }
 
 char	*get_next_line(int fd)
@@ -53,10 +77,8 @@ char	*get_next_line(int fd)
 	buf = read_buf_line(fd, buf);
 	if (!buf)
 		return (NULL);
-		/*give the return line to line*/
 	line = give_line(buf);
-	/*clear the return from the buf array*/
-	buf = ;
+	buf = clear_buf(buf);
 	return (line);
 }
 
