@@ -13,7 +13,7 @@
 #include "get_next_line.h"
 
 
-int	ft_strlen(const char *str)
+int	ft_strlen(char *str)
 {
 	int	length;
 
@@ -23,21 +23,28 @@ int	ft_strlen(const char *str)
 	return (length);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char  *s1, char  *s2)
 {
+	//there is a possible leak in strjoin when the file only contains a newline
 	char	*join;
 	size_t	size;
-	/*here is the problem, ft_strlen tries to read s1(buf) but there is nothing to read, segfault*/
+	int		i;
+
+	i = 0;
+	if (!s1)
+		s1 = ft_calloc(1, sizeof(char));
+	if (!s2)
+		return (NULL);
 	size = ft_strlen(s1) + ft_strlen(s2);
 	join = (char *)ft_calloc(size + 1, sizeof(char));
 	if (!join)
 		return (NULL);
-	while (*s1)
-		*join++ = *s1++;
-	while (*s2)
+	while(s1[i])
+		*join++ = s1[i++];
+	while(*s2)
 		*join++ = *s2++;
 	join -= size;
-	return (join);
+	return (free(s1), join);
 }
 
 void	*ft_calloc(size_t nmemb, size_t size)
@@ -63,10 +70,14 @@ int check_line(char *buf)
 	i = 0;
 	if (!buf)
 		return (0);
-	while (buf[i] != '\n' && buf[i])
+	while (buf[i])
 	{
-		if (i == '\n')
+		if (buf[i] == '\n')
+		{
+			if (!i)
+				return (1);
 			return (i);
+		}
 		i++;
 	}
 	return(0);

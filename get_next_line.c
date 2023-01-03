@@ -29,7 +29,7 @@ char	*read_buf_line(int fd, char *buf)
 	{
 		bytes_read = read(fd, line, BUFFER_SIZE);
 		if (bytes_read == -1)
-			return(free(buf), NULL);
+			return(free(line), NULL);
 		buf = ft_strjoin(buf, line);
 	}
 	return (free(line), buf);
@@ -44,11 +44,16 @@ char	*give_line(char *buf)
 		return (NULL);
 	i = check_line(buf);
 	line = ft_calloc(i + 1 , sizeof(char));
-	while (i)
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (buf[i] != '\n' && buf[i])
 	{
 		line[i] = buf[i];
-		i--;
+		i++;
 	}
+	if (buf[i] == '\n')
+		line[i] = '\n';
 	return (line);
 }
 
@@ -61,9 +66,16 @@ char	*clear_buf(char *buf)
 
 	j = 0;
 	i = check_line(buf);
+	if (!i)
+		return (free(buf), NULL);	
+	clear = ft_calloc(i + 1, sizeof(char));
+	if (!clear)
+		return (free(clear), NULL);
+	//might have to check i + 1
+	if (buf[i] == '\n')
+		i++;
 	while (buf[i])
 		clear[j++] = buf[i++];
-	clear[j] = 0;
 	return (clear);
 }
 
@@ -72,7 +84,7 @@ char	*get_next_line(int fd)
 	static char	*buf;
 	char		*line;
 	
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE < 0)
 		return (0);
 	buf = read_buf_line(fd, buf);
 	if (!buf)
@@ -82,17 +94,17 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-int	main(int argc, char **argv)
+int	main(void)
 {
-	int		i = atoi(argv[1]);
+	char	*line;
 	int		fd;
 
-	fd = open("fileread", O_RDWR);
-	while (i)
+	fd = open("fileread.txt", O_RDONLY);
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
-		printf("%s",get_next_line(fd));
-		i--;
+		printf("%s", line);
+		line = get_next_line(fd);
 	}
-	(void)argc;
 	return (0);
 }

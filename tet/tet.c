@@ -9,7 +9,6 @@ char	*ft(char *ft)
 {
 	int	index = 0;
 
-	ft = malloc (3 * sizeof(char));
 	while (index != 3)
 		ft[index++] = 'A';
 
@@ -25,9 +24,8 @@ int	main(void)
 	write( 1, buf, BUFFER_SIZE);
 	return (0);*/
 	char *ter1;
-	char *ter2;
+	char ter2[3];
 
 	ter1 = ft(ter2);
-	free(ter2);
 	return (0);
 }
