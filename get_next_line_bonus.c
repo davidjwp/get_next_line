@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: djacobs <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/23 10:10:23 by djacobs           #+#    #+#             */
-/*   Updated: 2022/12/23 10:10:25 by djacobs          ###   ########.fr       */
+/*   Created: 2023/01/04 18:01:37 by djacobs           #+#    #+#             */
+/*   Updated: 2023/01/04 18:01:38 by djacobs          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 // #include <fcntl.h>
 // #include <stdio.h>
 // #include <stdlib.h>
@@ -85,16 +85,16 @@ static char	*clear_buf(char *buf)
 
 char	*get_next_line(int fd)
 {
-	static char	*buf;
+	static char	*buf[1024];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buf = read_and_store(fd, buf);
-	if (!buf)
+	buf[fd] = read_and_store(fd, buf[fd]);
+	if (!buf[fd])
 		return (NULL);
-	line = give_line(buf);
-	buf = clear_buf(buf);
+	line = give_line(buf[fd]);
+	buf[fd] = clear_buf(buf[fd]);
 	return (line);
 }
 
