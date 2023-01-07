@@ -15,7 +15,7 @@
 // #include <stdio.h>
 // #include <stdlib.h>
 
-static char	*read_and_store( int fd, char *buf)
+static char	*read_buf_line( int fd, char *buf)
 {
 	char	*line;
 	int		bytes_read;
@@ -90,7 +90,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buf[fd] = read_and_store(fd, buf[fd]);
+	buf[fd] = read_buf_line(fd, buf[fd]);
 	if (!buf[fd])
 		return (NULL);
 	line = give_line(buf[fd]);
